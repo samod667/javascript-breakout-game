@@ -83,8 +83,88 @@ function drawBricks() {
     })
 }
 
+//Move paddle function
+function movePaddle() {
+    paddle.x += paddle.dx;
+
+    //ball detection
+    if(paddle.x + paddle.w > canvas.width) {
+        paddle.x = canvas.width - paddle.w;
+    }
+
+    if(paddle.x < 0) {
+        paddle.x = 0;
+    }
+}
+
+//Increase score
+function increaseScore(){
+    score += 1;
+
+    if(score % (brickRowCount * brickRowCount === 0)){
+        showAllBricks();
+    }
+}
+
+//Show all bricks
+function showAllBricks(){
+    bricks.forEach(column => {
+        column.forEach(brick => {
+            brick.visible = true;
+        })
+    })
+}
+
+//Move ball
+function moveBall() {
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+
+    //Wall collision right/left
+    if(ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
+        ball.dx *= -1;
+    }
+
+    // Wall collision top/bottom
+    if (ball.y + ball.size > canvas.height || ball.y - ball.size < 0) {
+        ball.dy *= -1;
+    }
+
+    //Paddle collision
+    if(ball.x - ball.size > paddle.x && ball.x + ball.size < paddle.x + paddle.w && ball.y + ball.size > paddle.y) {
+        ball.dy = -ball.speed;
+    }
+
+    //Brick collision
+    bricks.forEach(column => {
+        column.forEach(brick => {
+            if(brick.visible) {
+                if (
+                  ball.x - ball.size > brick.x && 
+                  ball.x + ball.size < brick.x + brick.w &&
+                  ball.y + ball.size > brick.y && 
+                  ball.y - ball.size < brick.y + brick.h 
+                ) {
+                     ball.dy *= -1;
+                     brick.visible = false;
+
+                     increaseScore();
+                }
+            }
+        })
+    })
+
+    //Hit bottom wall - lost
+    if (ball.y + ball.size > canvas.height) {
+        showAllBricks();
+        score = 0;
+    }
+}
+
 //Draw everything
 function draw() {
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
     drawPaddle();
     drawBall();
     drawScore();
@@ -97,8 +177,38 @@ function drawScore() {
     ctx.fillText(`Score: ${score}`, canvas.width - 100, 30)
 }
 
-draw();
+//Update canvas drawing and animations
+function update() {
+    movePaddle();
+    moveBall();
 
+    //Draw all
+    draw();
+
+    requestAnimationFrame(update);
+}
+
+update();
+
+//Keydown event
+function keyDown(e) {
+    if(e.key === 'Right' || e.key === 'ArrowRight') {
+        paddle.dx = paddle.speed;
+    } else if(e.key === 'Left' || e.key === 'ArrowLeft') {
+        paddle.dx = -paddle.speed;
+    }
+}
+
+//Keyup function
+function keyUp(e) {
+    if(e.key === 'Right' || e.key === 'ArrowRight' || e.key === 'Left' || e.key === 'ArrowLeft') {
+        paddle.dx = 0;
+    }
+}
+
+//Keyboard event handle
+document.addEventListener('keydown', keyDown);
+document.addEventListener('keyup', keyUp);
 
 
 // Show and close rules handler
