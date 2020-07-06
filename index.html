@@ -17,8 +17,25 @@
     </div>
 
     <canvas id="canvas" width="800" height="600">
-
+        
     </canvas>
+    <div class="start-game" id="start-game">
+            <h3>Start Game</h3>
+            <strong><span id="countdown"></span></strong>
+            
+            <button class="btn" id="start-game-btn">Start Game</button>
+            <select name="difficulty" id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="normal">Normal</option>
+                <option value="hard">Hard</option>
+                <option value="extreme">Extreme</option>
+            </select>
+        </div>
+    <div class="game-over" id="game-over">
+        <h3>You lost...</h3>
+        <p id="game-over-score"></p>
+        <button class="btn" id="play-again-btn">Play Again!</button>
+    </div>
     
     <script src="./script.js"></script>
 </body>

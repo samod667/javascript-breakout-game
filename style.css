@@ -33,6 +33,48 @@ h1 {
     border-radius: 5px;
 }
 
+.start-game {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    visibility: visible;
+    background-color: #0095dd;
+    border-radius: 6px;
+    padding: 20px 10px;
+    color: white;
+    align-items: center;
+    width: 400px;
+    height: 200px;
+}
+
+.game-over {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    
+    background-color: #0095dd;
+    border-radius: 6px;
+    padding: 20px 10px;
+    color: white;
+    align-items: center;
+    width: 400px;
+    height: 200px;
+}
+
+#start-game-btn {
+    margin-top: 30px;
+}
+
+#countdown {
+    font-size: 24px;
+}
+
+#difficulty {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+}
+
 .btn:focus {
     outline: 0;
 }
